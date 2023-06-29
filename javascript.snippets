@@ -1,0 +1,975 @@
+# Prototype
+snippet proto
+	${1:class_name}.prototype.${2:method_name} = function(${3:first_argument}) {
+		${4:// body...}
+	};
+# Function
+snippet fun
+	function ${1?:function_name}(${2:argument}) {
+		${3:// body...}
+	}
+# Anonymous Function
+regex /((=)\s*|(:)\s*|(\()|\b)/f/(\))?/
+snippet f
+	function${M1?: ${1:functionName}}($2) {
+		${0}
+	}${M2?;}${M3?,}${M4?)}
+# Immediate function
+trigger \(?f\(
+endTrigger \)?
+snippet f(
+	(function(${1}) {
+		${0:/* code */}
+	}(${1}));
+# if
+snippet if
+	if (${1:true}) {
+		${0}
+	}
+# if ... else
+snippet ife
+	if (${1:true}) {
+		${2}
+	} else {
+		${0}
+	}
+# tertiary conditional
+snippet ter
+	${1:/* condition */} ? ${2:a} : ${3:b}
+# switch
+snippet switch
+	switch (${1:expression}) {
+		case '${3:case}':
+			${4:// code}
+			break;
+		${5}
+		default:
+			${2:// code}
+	}
+# case
+snippet case
+	case '${1:case}':
+		${2:// code}
+		break;
+	${3}
+
+# while (...) {...}
+snippet wh
+	while (${1:/* condition */}) {
+		${0:/* code */}
+	}
+# try
+snippet try
+	try {
+		${0:/* code */}
+	} catch (e) {}
+# do...while
+snippet do
+	do {
+		${2:/* code */}
+	} while (${1:/* condition */});
+# Object Method
+snippet :f
+regex /([,{[])|^\s*/:f/
+	${1:method_name}: function(${2:attribute}) {
+		${0}
+	}${3:,}
+# Timer functions
+snippet setTimeout
+regex /\b/st|timeout|setTimeo?u?t?/
+	setTimeout(function() {${2}}, ${1:10});
+snippet setInterval
+	setInterval(function() {${2}}, ${1:10});
+# Get Elements
+snippet gett
+	getElementsBy${1:TagName}('${2}')${3}
+snippet query
+	querySelector("${1}")
+# Get Element
+snippet get
+	getElementBy${1:Id}('${2}')${3}
+snippet queryAll
+	querySelectorAll("${1}")
+# eventlistener
+snippet addeventlistener
+	addEventListener("${1:click}", ${2})
+# console.log (Firebug)
+snippet cl
+	console.log(${1});
+# return
+snippet ret
+	return ${1:result}
+# hasOwnProperty
+snippet has
+	hasOwnProperty(${1})
+# docstring
+snippet /**
+	/**
+	 * ${1:description}
+	 *
+	 */
+snippet @par
+regex /^\s*\*\s*/@(para?m?)?/
+	param {${1:type}} ${2:name} ${3:description}
+snippet @ret
+	returns {${1:type}} ${2:description}
+# JSON.parse
+snippet jsonp
+	JSON.parse(${1:jstr});
+# JSON.stringify
+snippet jsons
+	JSON.stringify(${1:object});
+# self-defining function
+snippet sdf
+	var ${1:function_name} = function(${2:argument}) {
+		${3:// initial code ...}
+
+		$1 = function($2) {
+			${4:// main code}
+		};
+	}
+# singleton
+snippet sing
+	function ${1:Singleton} (${2:argument}) {
+		// the cached instance
+		var instance;
+
+		// rewrite the constructor
+		$1 = function $1($2) {
+			return instance;
+		};
+		
+		// carry over the prototype properties
+		$1.prototype = this;
+
+		// the instance
+		instance = new $1();
+
+		// reset the constructor pointer
+		instance.constructor = $1;
+
+		${3:// code ...}
+
+		return instance;
+	}
+# class
+snippet class
+regex /^\s*/clas{0,2}/
+	class ${1:Name}{
+		$0
+	}
+snippet constructor
+	constructor(${1}){
+		this.$1 = $1;
+	}
+snippet method
+	${1:name}(${2:args}) {
+		${0}
+	}
+snippet this.
+	this.${1} = $1;
+# 
+snippet for-
+	for (let ${1:i} = ${2:Things}.length; ${1:i}--; ) {
+		${0:${2:Things}[${1:i}];}
+	}
+# for (...) {...}
+snippet for
+	for (let ${1:i} = 0; $1 < ${2:Things}.length; $1++) {
+		${3:$2[$1]}$0
+	}
+# for (...) {...} (Improved Native For-Loop)
+snippet forr
+	for (let ${1:i} = ${2:Things}.length - 1; $1 >= 0; $1--) {
+		${3:$2[$1]}$0
+	}
+# for (property in object ) { ... }
+snippet fori
+	for (let ${1:prop} in ${2:Things}) {
+		${0:$2[$1]}
+	}
+
+#modules
+snippet def
+	define(function(require, exports, module) {
+	"use strict";
+	const ${1/.*\///} = require("${1}");
+	
+	});
+snippet req
+guard ^\s*
+	const ${1/.*\///} = require("${1}");
+	$0
+snippet requ
+guard ^\s*
+	const ${1/.*\/(.)/\u$1/} = require("${1}").${1/.*\/(.)/\u$1/};
+	$0
+snippet prom
+	new Promise((resolve, reject) => {
+		$1
+	});
+# std module
+snippet std.evalScript()
+	std.evalScript(str, options = undefined)
+
+snippet std.loadScript()
+	std.loadScript(filename)
+
+snippet std.loadFile()
+	let fstr = std.loadFile(filename)
+
+snippet std.open()
+	let file = std.open(filename, flags, errorObj = undefined)
+
+snippet std.fdopen()
+	std.fdopen(fd, flags, errorObj = undefined)
+
+snippet std.tmpfile()
+	std.tmpfile(errorObj = undefined)
+
+snippet std.puts()
+	std.puts(str)
+
+snippet std.printf()
+	std.printf(fmt, ...args)
+
+snippet std.sprintf()
+	std.sprintf(fmt, ...args)
+
+snippet std.gc()
+	std.gc()
+
+snippet std.parseExtJSON()
+	std.parseExtJSON(str)
+
+snippet std.strerror()
+	std.strerror(errno)
+
+# FILE prototype
+snippet file.close()
+	close()
+
+snippet file.puts()
+	puts(str)
+
+snippet file.printf()
+	printf(fmt, ...args)
+
+snippet file.flush()
+	flush()
+
+snippet file.seek()
+	seek(offset, whence)
+
+snippet file.tell()
+	tell()
+
+snippet file.tello()
+	tello()
+
+snippet file.eof()
+	eof()
+
+snippet file.fileno()
+fileno()
+
+snippet file.error()
+error()
+
+snippet file.clearerr()
+clearerr()
+
+snippet file.read()
+read(buffer, position, length)
+
+snippet file.write()
+write(buffer, position, length)
+
+snippet file.getline()
+getline()
+
+snippet file.readAsString()
+readAsString(max_size = undefined)
+
+snippet file.getByte()
+getByte()
+
+snippet file.putByte()
+putByte(c)
+
+# os module
+snippet os.open()
+let fd = os.open(filename, flags, mode = 0o666)
+
+snippet os.close()
+os.close(fd)
+
+snippet os.seek()
+os.seek(fd, offset, whence)
+
+snippet os.read()
+os.read(fd, buffer, offset, length)
+
+snippet os.write()
+os.write(fd, buffer, offset, length)
+
+snippet os.remove()
+os.remove(filename)
+
+snippet os.rename()
+os.rename(oldname, newname)
+
+snippet os.realpath()
+os.realpath(path)
+
+snippet os.getcwd()
+os.getcwd()
+
+snippet os.chdir()
+os.chdir(path)
+
+snippet os.mkdir()
+os.mkdir(path, mode = 0o777)
+
+snippet os.stat()
+os.stat(path), os.lstat(path)
+
+snippet os.utimes()
+os.utimes(path, atime, mtime)
+
+snippet os.readdir()
+os.readdir(path)
+
+snippet os.setReadHandler()
+os.setReadHandler(fd, func)
+
+snippet os.setWriteHandler()
+os.setWriteHandler(fd, func)
+
+snippet os.sleep()
+os.sleep(delay_ms)
+
+snippet os.setTimeout()
+os.setTimeout(func, delay)
+
+snippet os.setInterval()
+os.setInterval(func, interval)
+
+snippet os.setImmediate()
+os.setImmediate(func)
+
+snippet os.clearTimeout()
+os.clearTimeout(handle)
+
+snippet os.clearInterval()
+os.clearInterval(handle)
+
+snippet os.clearImmediate()
+os.clearImmediate(handle)
+
+snippet os.platform
+os.platform
+
+# Color module
+snippet col = Color.new()
+var col = Color.new(r, g, b, a)
+
+snippet Color.getR()
+var r = Color.getR(col)
+
+snippet Color.getG()
+var g = Color.getG(col)
+
+snippet Color.getB()
+var b = Color.getB(col)
+
+snippet Color.getA()
+var a = Color.getA(col)
+
+snippet Color.setR()
+Color.setR(col, r)
+
+snippet Color.setG()
+Color.setG(col, g)
+
+snippet Color.setB()
+Color.setB(col, g)
+
+snippet Color.setA()
+Color.setA(col, a)
+
+# Image Module
+snippet image = new Image()
+	var image = new Image(path, mode, async_list)
+
+snippet image.draw()
+	image.draw(x, y)
+
+snippet image.ready()
+	var loaded = image.ready()
+snippet image.width
+	image.width
+snippet image.height
+	image.height	
+snippet image.endx
+	image.endx	
+snippet image.endy
+	image.endy	
+snippet image.startx
+	image.startx	
+snippet image.starty
+	image.starty
+snippet image.angle
+	image.angle
+snippet image.color
+	image.color
+snippet image.filter
+	image.filter
+# ImageList
+snippet async_list = new ImageList()
+	var async_list = new ImageList()
+
+# std module
+snippet std.evalScript()
+	std.evalScript(str, options = undefined)
+
+snippet std.loadScript()
+	std.loadScript(filename)
+
+snippet std.loadFile()
+	let fstr = std.loadFile(filename)
+
+snippet std.open()
+	let file = std.open(filename, flags, errorObj = undefined)
+
+snippet std.fdopen()
+	std.fdopen(fd, flags, errorObj = undefined)
+
+snippet std.tmpfile()
+	std.tmpfile(errorObj = undefined)
+
+snippet std.puts()
+	std.puts(str)
+
+snippet std.printf()
+	std.printf(fmt, ...args)
+
+snippet std.sprintf()
+	std.sprintf(fmt, ...args)
+
+snippet std.gc()
+	std.gc()
+
+snippet std.parseExtJSON()
+	std.parseExtJSON(str)
+
+snippet std.strerror()
+	std.strerror(errno)
+
+# FILE prototype
+snippet file.close()
+	close()
+
+snippet file.puts()
+	puts(str)
+
+snippet file.printf()
+	printf(fmt, ...args)
+
+snippet file.flush()
+	flush()
+
+snippet file.seek()
+	seek(offset, whence)
+
+snippet file.tell()
+	tell()
+
+snippet file.tello()
+	tello()
+
+snippet file.eof()
+	eof()
+
+snippet file.fileno()
+	fileno()
+
+snippet file.error()
+	error()
+
+snippet file.clearerr()
+	clearerr()
+
+snippet file.read()
+	read(buffer, position, length)
+
+snippet file.write()
+	write(buffer, position, length)
+
+snippet file.getline()
+	getline()
+
+snippet file.readAsString()
+	readAsString(max_size = undefined)
+
+snippet file.getByte()
+	getByte()
+
+snippet file.putByte()
+	putByte(c)
+
+# os module
+snippet os.open()
+	let fd = os.open(filename, flags, mode = 0o666)
+
+snippet os.close()
+	os.close(fd)
+
+snippet os.seek()
+	os.seek(fd, offset, whence)
+
+snippet os.read()
+	os.read(fd, buffer, offset, length)
+
+snippet os.write()
+	os.write(fd, buffer, offset, length)
+
+snippet os.remove()
+	os.remove(filename)
+
+snippet os.rename()
+	os.rename(oldname, newname)
+
+snippet os.realpath()
+	os.realpath(path)
+
+snippet os.getcwd()
+	os.getcwd()
+
+snippet os.chdir()
+	os.chdir(path)
+
+snippet os.mkdir()
+	os.mkdir(path, mode = 0o777)
+
+snippet os.stat()
+	os.stat(path), os.lstat(path)
+
+snippet os.utimes()
+	os.utimes(path, atime, mtime)
+
+snippet os.readdir()
+	os.readdir(path)
+
+snippet os.setReadHandler()
+	os.setReadHandler(fd, func)
+
+snippet os.setWriteHandler()
+	os.setWriteHandler(fd, func)
+
+snippet os.sleep()
+	os.sleep(delay_ms)
+
+snippet os.setTimeout()
+	os.setTimeout(func, delay)
+
+snippet os.setInterval()
+	os.setInterval(func, interval)
+
+snippet os.setImmediate()
+	os.setImmediate(func)
+
+snippet os.clearTimeout()
+	os.clearTimeout(handle)
+
+snippet os.clearInterval()
+	os.clearInterval(handle)
+
+snippet os.clearImmediate()
+	os.clearImmediate(handle)
+
+snippet os.platform
+	os.platform
+
+# Color module
+snippet col = Color.new()
+	var col = Color.new(r, g, b, a)
+
+snippet Color.getR()
+	var r = Color.getR(col)
+
+snippet Color.getG()
+	var g = Color.getG(col)
+
+snippet Color.getB()
+	var b = Color.getB(col)
+
+snippet Color.getA()
+	var a = Color.getA(col)
+
+snippet Color.setR()
+	Color.setR(col, r)
+
+snippet Color.setG()
+	Color.setG(col, g)
+
+snippet Color.setB()
+	Color.setB(col, g)
+
+snippet Color.setA()
+	Color.setA(col, a)
+
+snippet new Image(path, mode, async_list)
+	var image = new Image(${1:path}, ${2:mode}, ${3:async_list});
+snippet new ImageList()
+	var async_list = new ImageList();
+snippet Draw.point(x, y, color)
+	Draw.point(${1:x}, ${2:y}, ${3:color});
+snippet Draw.rect(x, y, width, height, color)
+	Draw.rect(${1:x}, ${2:y}, ${3:width}, ${4:height}, ${5:color});
+snippet Draw.line(x, y, x2, y2, color)
+	Draw.line(${1:x}, ${2:y}, ${3:x2}, ${4:y2}, ${5:color});
+snippet Draw.circle(x, y, radius, color, filled)
+	Draw.circle(${1:x}, ${2:y}, ${3:radius}, ${4:color}, ${5:filled});
+snippet Draw.triangle(x, y, x2, y2, x3, y3, color, color2, color3)
+	Draw.triangle(${1:x}, ${2:y}, ${3:x2}, ${4:y2}, ${5:x3}, ${6:y3}, ${7:color}, ${8:color2}, ${9:color3});
+snippet Draw.quad(x, y, x2, y2, x3, y3, x4, y4 color, color2, color3, color4)
+	Draw.quad(${1:x}, ${2:y}, ${3:x2}, ${4:y2}, ${5:x3}, ${6:y3}, ${7:x4}, ${8:y4}, ${9:color}, ${10:color2}, ${11:color3}, ${12:color4});
+snippet Render.init(aspect)
+	Render.init(${1:aspect});
+snippet Render.loadOBJ(path, texture)
+	var model = Render.loadOBJ(${1:path}, ${2:texture});
+snippet Render.drawOBJ(model, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z)
+	Render.drawOBJ(${1:model}, ${2:pos_x}, ${3:pos_y}, ${4:pos_z}, ${5:rot_x}, ${6:rot_y}, ${7:rot_z});
+snippet Render.freeOBJ(model)
+	Render.freeOBJ(${1:model});
+snippet Camera.position(x, y, z)
+	Camera.position(${1:x}, ${2:y}, ${3:z});
+snippet Camera.rotation(x, y, z)
+	Camera.rotation(${1:x}, ${2:y}, ${3:z});
+snippet Lights.create(count)
+	Lights.create(count)
+snippet Lights.set(light, dir_x, dir_y, dir_z, r, g, b, type)
+	Lights.set(light, dir_x, dir_y, dir_z, r, g, b, type)
+# Screen module
+snippet Screen.clear(color)
+	Screen.clear(color)
+
+snippet Screen.flip()
+	Screen.flip()
+
+snippet Screen.getFreeVRAM()
+	Screen.getFreeVRAM()
+
+snippet Screen.setVSync(bool)
+	Screen.setVSync(bool)
+
+snippet Screen.setFrameCounter(bool)
+	Screen.setFrameCounter(bool)
+
+snippet Screen.waitVblankStart()
+	Screen.waitVblankStart()
+
+snippet Screen.getFPS(frame_interval)
+	Screen.getFPS(frame_interval)
+
+snippet Screen.getMode()
+	Screen.getMode()
+
+snippet Screen.setMode(canvas)
+	Screen.setMode(canvas)
+
+# Font module
+snippet Font(path)
+	var font = new Font(path)
+
+snippet Font()
+	var osdfnt = new Font()
+
+snippet Font("Segoe UI.ttf")
+	var font = new Font("Segoe UI.ttf")
+
+snippet font.print(x, y, text)
+	font.print(x, y, text)
+
+snippet font.getTextSize(text)
+	font.getTextSize(text)
+snippet font.color
+	font.color
+snippet font.scale
+	font.scale
+# Pads module
+snippet Pads.get(port)
+	var pad = Pads.get(port)
+snippet Pads.START
+	Pads.START
+snippet Pads.SELECT
+	Pads.SELECT
+snippet Pads.R1
+	Pads.R1
+snippet Pads.R2
+	Pads.R2
+snippet Pads.L1
+	Pads.L1
+snippet Pads.L3
+	Pads.L3
+snippet Pads.R3
+	Pads.R3
+snippet pad.btns
+	pad.btns
+snippet pad.lx
+	pad.lx
+snippet pad.ly
+	pad.ly
+snippet pad.rx
+	pad.rx
+snippet pad.ry
+	pad.ry
+snippet Pads.UP 
+	Pads.UP
+snippet Pads.RIGHT 
+	Pads.RIGHT
+snippet Pads.DOWN 
+	Pads.DOWN
+snippet Pads.LEFT 
+	Pads.LEFT
+snippet Pads.CROSS 
+	Pads.CROSS
+snippet Pads.TRIANGLE 
+	Pads.TRIANGLE
+snippet Pads.SQUARE 
+	Pads.QUARE
+snippet Pads.SQUARE 
+	Pads.CIRCLE
+snippet Pads.getType(port)
+	var type = Pads.getType(port)
+
+snippet Pads.getPressure(port, button)
+	var press = Pads.getPressure(port, button)
+
+snippet Pads.rumble(port, big, small)
+	Pads.rumble(port, big, small)
+
+snippet Pads.check(pad, button)
+	var ret = Pads.check(pad, button)
+
+# Keyboard module
+snippet Keyboard.init()
+	Keyboard.init()
+
+snippet Keyboard.get()
+	var c = Keyboard.get()
+
+snippet Keyboard.setRepeatRate(msec)
+	Keyboard.setRepeatRate(msec)
+
+snippet Keyboard.setBlockingMode(mode)
+	Keyboard.setBlockingMode(mode)
+
+snippet Keyboard.deinit()
+	Keyboard.deinit()
+
+# Mouse module
+snippet Mouse.init()
+	Mouse.init()
+snippet Mouse.x
+	Mouse.x
+snippet Mouse.y
+	Mouse.y
+snippet Mouse.wheel
+	Mouse.wheel
+snippet Mouse.buttons
+	Mouse.buttons
+snippet Mouse.get()
+	var mouse = Mouse.get()
+
+snippet Mouse.setBoundary(minx, maxx, miny, maxy)
+	Mouse.setBoundary(minx, maxx, miny, maxy)
+
+snippet Mouse.getMode()
+	var mode = Mouse.getMode()
+
+snippet Mouse.setMode(mode)
+	Mouse.setMode(mode)
+
+snippet Mouse.getAccel()
+	var accel = Mouse.getAccel()
+
+snippet Mouse.setAccel(val)
+	Mouse.setAccel(val)
+
+snippet Mouse.setPosition(x, y)
+	Mouse.setPosition(x, y)
+
+# System module
+snippet System.openFile(path, type)
+	var fd = System.openFile(path, type)
+
+snippet System.readFile(file, size)
+	var buffer = System.readFile(file, size)
+
+snippet System.writeFile(fd, data, size)
+	System.writeFile(fd, data, size)
+
+snippet System.closeFile(fd)
+	System.closeFile(fd)
+
+snippet System.seekFile(fd, pos, type)
+	System.seekFile(fd, pos, type)
+
+snippet System.sizeFile(fd)
+	var size = System.sizeFile(fd)
+
+snippet System.doesFileExist(path)
+	System.doesFileExist(path)
+
+snippet System.CurrentDirectory(path)
+	System.CurrentDirectory(path)
+
+snippet System.listDir(path)
+	var listdir = System.listDir(path)
+
+snippet System.createDirectory(path)
+	System.createDirectory(path)
+
+snippet System.removeDirectory(path)
+	System.removeDirectory(path)
+
+snippet System.removeFile(path)
+	System.removeFile(path)
+
+snippet System.copyFile(source, dest)
+	System.copyFile(source, dest)
+
+snippet System.moveFile(source, dest)
+	System.moveFile(source, dest)
+
+snippet System.rename(source, dest)
+	System.rename(source, dest)
+
+snippet System.sleep(sec)
+	System.sleep(sec)
+
+snippet System.getFreeMemory()
+	var freemem = System.getFreeMemory()
+
+snippet System.exitToBrowser()
+	System.exitToBrowser()
+
+snippet System.setDarkMode(value)
+	System.setDarkMode(value)
+
+snippet System.getTemperature()
+	var temps = System.getTemperature()
+
+snippet System.getMCInfo(slot)
+	var info = System.getMCInfo(slot)
+snippet System.getCPUInfo()
+	var ee_info = System.getCPUInfo();
+	ee_info.implementation;
+	ee_info.revision;
+	ee_info.FPUimplementation;
+	ee_info.FPUrevision;
+	ee_info.ICacheSize;
+	ee_info.DCacheSize;
+	ee_info.RAMSize;
+	ee_info.MachineSize;
+
+snippet System.getGPUInfo()
+	var gs_info = System.getGPUInfo();
+	gs_info.id;
+	gs_info.revision;
+
+snippet System.getMemoryStats()
+	var ram_usage = System.getMemoryStats();
+	ram_usage.core; // Kernel + Native code size in RAM
+	ram_usage.nativeStack; // Kernel + Native stack size
+	ram_usage.allocs; // Dynamic allocated memory tracking
+	ram_usage.used; // All above, but combined
+
+snippet System.threadCopyFile(source, dest)
+	System.threadCopyFile(source, dest);
+	var progress = System.getFileProgress();
+	progress.current;
+	progress.final;
+
+snippet Timer.new()
+	var timer = Timer.new();
+	Timer.getTime(timer);
+	Timer.setTime(src, value);
+	Timer.destroy(timer);
+	Timer.pause(timer);
+	Timer.resume(timer);
+	Timer.reset(timer);
+	Timer.isPlaying(timer);
+
+snippet Sound.setVolume(volume, slot)
+	Sound.setVolume(volume, slot); // If slot is specified, it will change ADPCM slot volume, else it will change master volume.
+	var audio = Sound.load(path);
+	Sound.play(audio, slot); // ADPCM: If slot isn't specified, it will use 0.
+	Sound.free(audio);
+	var playing = Sound.isPlaying(); // Doesn't apply for ADPCM
+	var msec = Sound.duration();
+	Sound.repeat(false); // Doesn't apply for ADPCM
+	Sound.pause(audio); // Doesn't apply for ADPCM
+	Sound.resume(audio); // Doesn't apply for ADPCM
+	Sound.deinit();
+
+snippet Archive.open(fname)
+	var zip = Archive.open(fname);
+	var list = Archive.list(zip);
+	Archive.extractAll(zip);
+	Archive.close(zip);
+	Archive.untar(fname);
+
+snippet IOP.loadModule(fname, arg_len, args)
+	var result = IOP.loadModule(fname, arg_len, args);
+	var result = IOP.loadModuleBuffer(mod_buf, arg_len, args);
+	IOP.loadDefaultModule(IOP.freeram); // IOP.keyboard - USB Keyboard, IOP.mouse - USB Mouse, IOP.freeram - IOP RAM Info, and more
+	IOP.reset();
+	var stats = IOP.getMemoryStats(); // P.S.: Requires IOP.loadDefaultModule(IOP.freeram) first!
+	stats.free;
+	stats.used;
+
+snippet Network.init(ip, netmask, gateway, dns)
+	Network.init(ip, netmask, gateway, dns);
+	Network.init("192.168.0.10", "255.255.255.0", "192.168.0.1", "192.168.0.1"); // Static mode
+	Network.init(); // DHCP Mode, dynamic
+	var conf = Network.getConfig();
+	conf.ip;
+	conf.netmask;
+	conf.gateway;
+	conf.dns;
+	Network.deinit(); // Shutdown network module.
+
+snippet new Request()
+	var r = new Request();
+	r.keepalive; // bool
+	r.useragent; // string
+	r.userpwd; // string
+	r.headers; // string array
+	r.get(url);
+	r.head(url);
+	r.post(url, data);
+	r.download(url, fname);
+	r.asyncGet(url);
+	r.asyncDownload(url, fname);
+	r.ready(timeout, conn_timeout);
+	r.getAsyncData();
+	r.getAsyncSize();
+
+snippet new Socket(domain, type)
+	var s = new Socket(domain, type);
+	s.connect(host, port);
+	s.bind(host, port);
+	s.listen();
+	s.send(data); // Send data with Buffer
+	s.recv(size); // Receive data to a buffer
+	s.close();
+
+snippet new WebSocket(url)
+	var s = new WebSocket(url);
+	s.send(data); // Send data with Buffer
+	s.recv(); // Receive data to a Buffer	
+	
+	
